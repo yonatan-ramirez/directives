@@ -1,4 +1,4 @@
-import { Directive, Renderer2, ElementRef, OnInit, HostListener, HostBinding } from '@angular/core';
+import { Directive, Renderer2, ElementRef, OnInit, HostListener, HostBinding, Input } from '@angular/core';
 
 @Directive({
   selector: '[appBetterHighlight]'
@@ -9,10 +9,10 @@ export class BetterHighlightDirective implements OnInit {
   private elementRef: ElementRef) { }
 
   // HostListener begining!-----
-  ngOnInit() {
-    // this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'blue');
-    // forth argument is optional. We can set !important in that argument
-  }
+  // ngOnInit() {
+  //   // this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'blue');
+  //   // forth argument is optional. We can set !important in that argument
+  // }
 
 //   // Host listener decorator is added to a method we want to execute on an event
 //   // when the moust enters (hovers over) the listener it turns blue!
@@ -29,20 +29,45 @@ export class BetterHighlightDirective implements OnInit {
 
 // HostBinding Begining -------------
                                                 // backgroundColor: string = 'transparent';
-    // tslint:disable-next-line:member-ordering
-    @HostBinding('style.backgroundColor') backgroundColor = 'transparent';
-    // Bind to host property using HostBinding!
-    // define in string
-    // camelCase property name because we are accessing DOM property not CSS
+//     // tslint:disable-next-line:member-ordering
+//     @HostBinding('style.backgroundColor') backgroundColor = 'transparent';
+//     // Bind to host property using HostBinding!
+//     // define in string
+//     // camelCase property name because we are accessing DOM property not CSS
 
-  // Host listener decorator is added to a method we want to execute on an event
-  // when the moust enters (hovers over) the listener it turns blue!
-  @HostListener('mouseenter') mouseEnter() {
-    this.backgroundColor = 'blue';
-  }
-// when the mouse pointer no longer hovers over it turns transparent
-  @HostListener('mouseleave') mouseOut() {
-    this.backgroundColor = 'transparent';
-  }
+//   // Host listener decorator is added to a method we want to execute on an event
+//   // when the moust enters (hovers over) the listener it turns blue!
+//   @HostListener('mouseenter') mouseEnter() {
+//     this.backgroundColor = 'blue';
+//   }
+// // when the mouse pointer no longer hovers over it turns transparent
+//   @HostListener('mouseleave') mouseOut() {
+//     this.backgroundColor = 'transparent';
+//   }
   // HostBinding End! -------------------
+
+  // Binding to directive property!=-------------------
+    // tslint:disable-next-line:member-ordering
+    @Input() defaultColor = 'transparent';
+    // tslint:disable-next-line:member-ordering
+    // tslint:disable-next-line:no-input-rename
+    @Input('appBetterHighlight') highlightColor = 'blue';
+      // tslint:disable-next-line:member-ordering
+      @HostBinding('style.backgroundColor') backgroundColor = 'transparent';
+
+      ngOnInit() {
+        this.backgroundColor = this.defaultColor;
+
+      }
+      // when the moust enters (hovers over) the listener it turns blue!
+    @HostListener('mouseenter') mouseEnter() {
+      this.backgroundColor = this.highlightColor;
+    }
+  // when the mouse pointer no longer hovers over it turns transparent
+    @HostListener('mouseleave') mouseOut() {
+      this.backgroundColor = this.defaultColor;
+    }
+
+    // End Binding to directive property example--------
+
 }
